@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react'
+import Axios from 'axios';
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import VideoCard from "./VideoCard";
@@ -25,20 +25,45 @@ const Wrapper = styled.div`
 `;
 
 const ChannelTabVideo = () => {
-  const { videos } = useSelector((state) => state.profile.data);
+// const [videos, setVideos] = useState([]);
+const [getData, setGetData] = useState([]);
+const [render, setRender] = useState(false);
 
-  if (!videos?.length) {
+useEffect(() => {
+  const id = localStorage.getItem("id");
+
+  try {
+    Axios.get(`http://localhost:8000/api/user/${id}`).then((response) => {
+      // setGetData(response.data.user);
+      setGetData(response.data.user.video);
+
+      console.log(response.data.user.video);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}, [render]);
+  // const { videos } = useSelector((state) => state.profile.data);
+
+  if (!getData?.length) {
     return <p>This channel hasn't posted any videos yet</p>;
   }
 
   return (
     <Wrapper>
       <div className="videos">
-        {videos?.map((video) => (
-          <Link to={`/watch/${video.id}`} key={video.id}>
-            <VideoCard nousername={true} hideavatar={true} video={video} />
+        {getData.map((video) => (
+          
+          <Link 
+          to={`/watch/${video.id}`} key={video.id}
+          >
+            <VideoCard 
+            nousername={true} hideavatar={true} 
+            video={video}
+             />
           </Link>
         ))}
+
       </div>
     </Wrapper>
   );

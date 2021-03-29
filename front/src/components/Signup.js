@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import Axios from 'axios';
-import useInput from "../hooks/useInput";
+// import useInput from "../hooks/useInput";
 
 export const StyledAuth = styled.div`
   width: 385px;
@@ -69,8 +69,8 @@ const Signup = ({ setAuth }) => {
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState('');
-  const [password1, setPassword1] = useState('');
-  const [password2, setPassword2] = useState('');
+  const [password, setPassword] = useState('');
+  // const [password2, setPassword2] = useState('');
   const [token, setToken] = useState('');
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,14 +81,14 @@ const Signup = ({ setAuth }) => {
       body.append("lastName", lastName);
       body.append("userName", userName);
       body.append("email", email);
-      body.append("password", password1);
+      body.append("password", password);
       await Axios
         .post(link, body, {
           headers: {
-            // "content-type": "multipart/form-data",
-            // Accept: "application/json",
-            'content-type': 'multipart/form-data',
-            'Authorization': "Bearer " + localStorage.getItem('token')
+             "content-type": "multipart/form-data",
+            'Accept': "application/json",
+            // 'content-type': 'multipart/form-data',
+            // 'Authorization': "Bearer " + localStorage.getItem('token')
           }
         }).then((response) => {
           setToken(response.data.access_token)
@@ -96,10 +96,18 @@ const Signup = ({ setAuth }) => {
             response.data &&
             response.data.access_token &&
             localStorage.setItem("token", response.data.access_token);
-            localStorage.setItem("id", response.data.user.id);
-            localStorage.setItem("email", response.data.user.email);
-            localStorage.setItem("password", response.data.user.password);
-            localStorage.setItem("username", response.data.user.username);
+            // localStorage.setItem("id", response.data.user.id);
+            // localStorage.setItem("email", response.data.user.email);
+            // localStorage.setItem("password", response.data.user.password);
+            // localStorage.setItem("username", response.data.user.username);
+            window.location.reload(true);
+            // console.log(localStorage.getItem('token'))
+          localStorage.setItem("id", response.data.user.id);
+          localStorage.setItem("userName", response.data.user.userName);
+          localStorage.setItem("avatar", response.data.user.avatar);
+          localStorage.setItem("cover", response.data.user.cover);
+          localStorage.setItem("channelDescription", response.data.user.channelDescription);
+          
           }
 
         })
@@ -189,15 +197,15 @@ const Signup = ({ setAuth }) => {
           <input
             type="password"
             placeholder="password"
-            value={password1}
-            onChange={(e) => { setPassword1(e.target.value) }}
+            value={password}
+            onChange={(e) => { setPassword(e.target.value) }}
           />
-          <input
+          {/* <input
             type="password"
             placeholder="confirm"
             value={password2}
             onChange={(e) => { setPassword2(e.target.value) }}
-          />
+          /> */}
         </div>
         <div className="action input-group">
           <span className="pointer" onClick={() => setAuth("LOGIN")}>

@@ -1,12 +1,14 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
 
 const ChannelTabAbout = () => {
-  const { channelDescription: about } = useSelector(
-    (state) => state.profile.data
-  );
+    const [about, setAbout] = useState('');
 
-  return <p>{about ? about : "No description for this channel"}</p>;
+    useEffect(() => {
+        setAbout(localStorage.getItem('channelDescription'))
+   },[])
+   //  console.log(token)
+
+  return <p>{about=='null'  ? "No description for this channel": about}</p>;
 };
 
 export default ChannelTabAbout;

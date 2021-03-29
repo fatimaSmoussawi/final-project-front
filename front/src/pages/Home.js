@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
 import styled from "styled-components";
-// import { Link } from "react-router-dom";
-// import VideoCard from "../components/VideoCard";
+import { Link } from "react-router-dom";
+import VideoCard from "../components/VideoCard";
 // import Skeleton from "../skeletons/HomeSkeleton";
-// import VideoGrid from "../styles/VideoGrid";
+import VideoGrid from "../styles/VideoGrid";
 // import { getRecommendation } from "../reducers/recommendation";
 
 export const StyledHome = styled.div`
@@ -52,20 +53,55 @@ const Home = () => {
 //   if (isFetching) {
 //     return <Skeleton title={true} />;
 //   }
+const [getData, setGetData] = useState([]);
+const [render, setRender] = useState(false);
+
+useEffect(() => {
+  try {
+    Axios.get("http://localhost:8000/api/video").then((response) => {
+      setGetData(response.data.video);
+      console.log(response.data.video);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}, [render]);
+
 
   return (
-    <StyledHome>
+    <div>
+     <StyledHome>
       <h2>Recommended</h2>
 
-      {/* <VideoGrid>
-        {!isFetching &&
-          videos.map((video) => (
-            <Link key={video.id} to={`/watch/${video.id}`}>
-              <VideoCard video={video} />
-            </Link>
-          ))}
-      </VideoGrid> */}
+      <VideoGrid>
+
+      {getData.map((video) => {
+				return (
+					 <Link key={video.id} to={`/watch/${video.id}`}>
+
+						{/* <p>{val.url}</p>
+						<p>{val.start}</p>
+						<p>{val.end}</p>
+						<p>{val.newUrl}</p> */}
+          <VideoCard video={video} />
+
+				
+           </Link>
+      	);
+			})}
+      
+            {/* {
+            // !isFetching &&
+            
+              videos.map((video) => (
+                // <Link key={video.id} to={`/watch/${video.id}`}>
+                  <VideoCard video={video} />
+                // </Link>
+              )
+              )} */}
+      </VideoGrid>
     </StyledHome>
+    </div>
   );
 };
 

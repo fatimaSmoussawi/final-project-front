@@ -13,7 +13,7 @@ const App = () => {
  useEffect(() => {
   setToken(localStorage.getItem('token'))
 },[])
- console.log(token)
+//  console.log(token)
 
   return (
     <ThemeProvider theme={darkTheme}>

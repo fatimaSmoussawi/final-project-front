@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import Axios from 'axios';
+
 import { toast } from "react-toastify";
 import { StyledAuth } from "./Signup";
 // import { Router, Link, Route, Redirect } from 'react-router-dom'
-import Axios from 'axios';
 import useInput from "../hooks/useInput";
 
 const Login = ({ setAuth }) => {
@@ -60,10 +61,14 @@ const Login = ({ setAuth }) => {
             response.data &&
               response.data.access_token &&
               localStorage.setItem("token", response.data.access_token);
+              window.location.reload(true);
               // console.log(localStorage.getItem('token'))
-            // localStorage.setItem("id", response.data.user.id);
-            // localStorage.setItem("email", response.data.user.email);
-            // localStorage.setItem("password", response.data.user.password);
+            localStorage.setItem("id", response.data.user.id);
+            localStorage.setItem("userName", response.data.user.userName);
+            localStorage.setItem("avatar", response.data.user.avatar);
+            localStorage.setItem("cover", response.data.user.cover);
+            localStorage.setItem("channelDescription", response.data.user.channelDescription);
+
           }
         });
       } catch (err) { console.log(err) };
@@ -96,6 +101,7 @@ const Login = ({ setAuth }) => {
             Signup instead
           </span>
           <button>Login</button>
+          {/* {token ? <Redirect to="/home"/> : <Redirect to="/"/> } */}
         </div>
       </form>
     </StyledAuth>
